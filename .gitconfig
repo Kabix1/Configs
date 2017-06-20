@@ -3,3 +3,5 @@
 	name = Olle Wiklund
 [core]
 	editor = vim
+[push]
+	default = simple
