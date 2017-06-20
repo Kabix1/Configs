@@ -84,14 +84,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# create shell aliases for most used git commands
-alias st='git st'
-alias ci='git ci'
-alias lg='git log'
-alias co='git co'
-alias br='git br'
-alias dc='git diff --cached'
+alias tmux='tmux -2'
 
+alias commit='git commit'
 alias add='git add --all'
 alias log='git log'
 alias push='git push'
