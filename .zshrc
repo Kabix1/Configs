@@ -51,7 +51,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git debian dirhistory emoji-clock extract fancy-ctrl-z)
+plugins=(dirhistory emoji-clock extract fancy-ctrl-z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,3 +101,9 @@ alias amend='git commit -C HEAD --amend'
 
 alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
+
+alias update="sudo apt-get update"
+alias upgrade="sudo apt-get dist-upgrade"
+alias install="sudo apt-get install"
+alias search="apt search"
+alias remove="apt-get purge"
