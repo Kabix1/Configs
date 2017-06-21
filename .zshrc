@@ -51,7 +51,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(dirhistory emoji-clock extract fancy-ctrl-z)
+plugins=(git dirhistory emoji-clock extract fancy-ctrl-z)
 
 source $ZSH/oh-my-zsh.sh
 
