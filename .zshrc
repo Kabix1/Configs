@@ -84,6 +84,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH=$HOME/Scripts:$PATH
+
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 alias tmux='tmux -2'
 
 alias commit='git commit'
@@ -107,3 +110,7 @@ alias upgrade="sudo apt-get dist-upgrade"
 alias install="sudo apt-get install"
 alias search="apt search"
 alias remove="apt-get purge"
+
+# make symbols ´`^~¨ needing only one buttonpress, removing possibility of using them for accent
+xmodmap -e 'keycode 35 = diaeresis asciicircum NoSymbol NoSymbol asciitilde asciitilde'
+xmodmap -e 'keycode 21 = acute grave'
