@@ -51,7 +51,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git dirhistory emoji-clock extract fancy-ctrl-z)
+plugins=(git dirhistory emoji-clock extract fancy-ctrl-z zsh-syntax-highlighting zsh-history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -89,6 +89,8 @@ export PATH=$HOME/Scripts:$PATH
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 alias tmux='tmux -2'
 
+
+# git aliases
 alias commit='git commit'
 alias add='git add --all'
 alias log='git log'
@@ -102,9 +104,12 @@ alias branch='git branch'
 alias rebase='git rebase'
 alias amend='git commit -C HEAD --amend'
 
+# edit confs
 alias zshrc="vim ~/.zshrc"
 alias vimrc="vim ~/.vimrc"
+alias tmuxrc="vim ~/.tmux.conf"
 
+# apt aliases
 alias update="sudo apt-get update"
 alias upgrade="sudo apt-get dist-upgrade"
 alias install="sudo apt-get install"
@@ -112,5 +117,11 @@ alias search="apt search"
 alias remove="apt-get purge"
 
 # make symbols ´`^~¨ needing only one buttonpress, removing possibility of using them for accent
-xmodmap -e 'keycode 35 = diaeresis asciicircum NoSymbol NoSymbol asciitilde asciitilde'
+xmodmap -e 'keycode 35 = dollar asciicircum NoSymbol NoSymbol asciitilde asciitilde'
 xmodmap -e 'keycode 21 = acute grave'
+
+# locate always regex
+alias locate='locate -r'
+
+# add personal path for autocompletion
+fpath=(~/.zsh_completions $fpath)
