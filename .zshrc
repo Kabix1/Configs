@@ -103,6 +103,7 @@ alias merge='git merge -s recursive -X patience'
 alias branch='git branch'
 alias rebase='git rebase'
 alias amend='git commit -C HEAD --amend'
+alias change_url='git remote set-url'
 
 # edit confs
 alias zshrc="vim ~/.zshrc"
