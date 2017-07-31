@@ -20,11 +20,14 @@ Plugin 'tpope/vim-commentary'
 Plugin 'ervandew/screen'
 Plugin 'benmills/vimux'
 Plugin 'rodjek/vim-puppet'
+Plugin 'ap/vim-buftabline'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 let g:pydoc_window_lines=0.5
+
+source ~/.vim/bundle/scratch/scratch.vim
 
 source ~/.vim/vimrcs/basic.vim
 source ~/.vim/vimrcs/filetypes.vim

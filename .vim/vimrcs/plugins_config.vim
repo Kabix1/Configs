@@ -26,3 +26,7 @@
 let MRU_Max_Entries = 400
 map <leader>f :MRU<CR>
 
+map <leader>s :Scratch<CR>
+
+nnoremap <C-N> :bnext<CR>
+nnoremap <C-P> :bprev<CR>
