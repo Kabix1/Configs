@@ -44,7 +44,7 @@ end
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "st"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -419,8 +419,8 @@ end
 
 clientbuttons = awful.util.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-    awful.button({ modkey }, 1, awful.mouse.client.move),
-    awful.button({ modkey }, 3, awful.mouse.client.resize))
+    awful.button({ Mod4 }, 1, awful.mouse.client.move),
+    awful.button({ Mod4 }, 3, awful.mouse.client.resize))
 
 -- Set keys
 root.keys(globalkeys)
