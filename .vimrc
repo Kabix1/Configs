@@ -21,6 +21,7 @@ Plugin 'ervandew/screen'
 Plugin 'benmills/vimux'
 Plugin 'rodjek/vim-puppet'
 Plugin 'ap/vim-buftabline'
+Plugin 'mephux/bro.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required

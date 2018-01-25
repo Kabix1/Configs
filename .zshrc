@@ -125,4 +125,18 @@ xmodmap -e 'keycode 21 = acute grave'
 alias locate='locate -r'
 
 # add personal path for autocompletion
-fpath=(~/.zsh_completions $fpath)
+# fpath=(~/.zsh_completions $fpath)
+
+# =() {
+    # echo "$(($@))"
+# }
+
+alias sshApache="ssh -F /home/olle/.ssh/apache_config -o StrictHostKeyChecking=no"
+
+
+export WORKON_HOME=$HOME/.virtualenvs   # optional
+export PROJECT_HOME=$HOME/GitHub/      # optional
+source /usr/local/bin/virtualenvwrapper.sh
+export PATH="/home/olle/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

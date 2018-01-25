@@ -1,7 +1,10 @@
 [user]
-	email = owl@live.se
+	email = olle.wiklund@onlinegroup.com
 	name = Olle Wiklund
 [core]
 	editor = vim
 [push]
 	default = simple
+[gitreview]
+    username = olle.wiklund
+    remote = origin
