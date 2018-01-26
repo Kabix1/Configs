@@ -23,6 +23,75 @@ if awesome.startup_errors then
                      text = awesome.startup_errors })
 end
 
+----------------- My stuff ---------------------
+prt = function(...) naughty.notify{text=table.concat({...}, '\t')} end
+local atextbox = wibox.widget.textbox()
+-- Create a shortcut function
+local function echo_test()
+    awful.prompt.run {
+        prompt       = '<b>Echo: </b>',
+        text         = '',
+        bg_cursor    = '#ff0000',
+        -- To use the default rc.lua prompt:
+        -- textbox      = mouse.screen.mypromptbox.widget,
+        -- textbox      = atextbox,
+        textbox      = awful.screen.focused().mypromptbox.widget,
+        exe_callback = function(input)
+            if not input or #input == 0 then return end
+            naughty.notify{text=awful.util.eval(5+3)}
+            -- naughty.notify{text=awful.util.eval(table.concat({input}, '\t'))}
+            -- naughty.notify{text=table.concat({...}, '\t')}
+            -- naughty.notify{ text = 'The input was: '..input }
+        end
+    }
+end
+
+local atextbox = wibox.widget.textbox()
+-- Custom handler for the return value. This implementation does nothing,
+-- but you might want be notified of the failure, so it is part of this
+-- example.
+-- local function clear(result)
+--     atextbox.widget.text =
+--         type(result) == 'string' and result or ''
+-- end
+-- local hooks = {
+--     -- Replace the 'normal' Return with a custom one
+--     {{         }, 'Return', awful.spawn},
+--     -- Spawn method to spawn in the current tag
+--     {{'Mod1'   }, 'Return', function(command)
+--         clear(awful.spawn(command,{
+--             intrusive = true,
+--             tag       = mouse.screen.selected_tag
+--         }))
+--     end},
+--     -- Spawn in the current tag as floating and on top
+--     {{'Shift'  }, 'Return', function(command)
+--         clear(awful.spawn(command,{
+--             ontop     = true,
+--             floating  = true,
+--             tag       = mouse.screen.selected_tag
+--         }))
+--     end},
+--     -- Spawn in a new tag
+--     {{'Control'}, 'Return', function(command)
+--         clear(awful.spawn(command,{
+--             new_tag = true
+--         }))
+--     end},
+--     -- Cancel
+--     {{         }, 'Escape', function(_)
+--         clear()
+--     end},
+-- }
+-- awful.prompt.run {
+--     prompt        = '<b>Run: </b>',
+--     hooks         = hooks,
+--     textbox       = atextbox,
+-- 	history_path = awful.util.get_cache_dir() .. "/history_eval",
+--     done_callback = clear,
+-- }
+
+----------------- End of my stuff ---------------
 -- Handle runtime errors after startup
 do
     local in_error = false
@@ -330,6 +399,8 @@ globalkeys = awful.util.table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"}),
+	awful.key({ modkey,           }, "e", echo_test,
+		{description = "Echo a string", group = "custom"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
@@ -546,4 +617,4 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
+-------    My Stuff  -------
