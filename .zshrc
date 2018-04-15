@@ -124,6 +124,8 @@ xmodmap -e 'keycode 21 = acute grave'
 # locate always regex
 alias locate='locate -r'
 
+alias rdesktop='rdesktop -g 1680x980 -k sv -u olle.wiklund -d ATM.BINERO.NET -p - -r disk:share=/home/olle/rdesktop'
+
 # add personal path for autocompletion
 # fpath=(~/.zsh_completions $fpath)
 
@@ -132,11 +134,15 @@ alias locate='locate -r'
 # }
 
 alias sshApache="ssh -F /home/olle/.ssh/apache_config -o StrictHostKeyChecking=no"
+SSH() {
+    xpanes -c "ssh {}" $(grep "$1" /etc/hosts | awk '{print $2}')
+}
 
 
 export WORKON_HOME=$HOME/.virtualenvs   # optional
 export PROJECT_HOME=$HOME/GitHub/      # optional
 source /usr/local/bin/virtualenvwrapper.sh
 export PATH="/home/olle/.pyenv/bin:$PATH"
+export PATH="/home/olle/.local/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
