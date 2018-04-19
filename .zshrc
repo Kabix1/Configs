@@ -111,9 +111,9 @@ alias vimrc="vim ~/.vimrc"
 alias tmuxrc="vim ~/.tmux.conf"
 
 # apt aliases
-alias update="sudo apt-get update"
+alias update="sudo apt update"
 alias upgrade="sudo apt-get dist-upgrade"
-alias install="sudo apt-get install"
+alias install="sudo apt install"
 alias search="apt search"
 alias remove="apt-get purge"
 
@@ -137,6 +137,8 @@ alias sshApache="ssh -F /home/olle/.ssh/apache_config -o StrictHostKeyChecking=n
 SSH() {
     xpanes -c "ssh {}" $(grep "$1" /etc/hosts | awk '{print $2}')
 }
+
+alias atm='kinit olle.wiklund@ATM.BINERO.NET'
 
 
 export WORKON_HOME=$HOME/.virtualenvs   # optional
