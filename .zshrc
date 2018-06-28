@@ -139,6 +139,11 @@ SSH() {
 }
 
 alias atm='kinit olle.wiklund@ATM.BINERO.NET'
+alias hostex='kinit olle.wiklund@HOSTEX.SE'
+alias xclip='xclip -selection clipboard'
+alias testing='git checkout testing/queens'
+alias master='git checkout master'
+alias prod='git checkout production/queens'
 
 
 export WORKON_HOME=$HOME/.virtualenvs   # optional

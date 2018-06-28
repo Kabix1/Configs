@@ -9,6 +9,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'valloric/youcompleteme'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-obsession'
 Plugin 'mru.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-rsi'
