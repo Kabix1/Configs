@@ -23,6 +23,9 @@ Plugin 'benmills/vimux'
 Plugin 'rodjek/vim-puppet'
 Plugin 'ap/vim-buftabline'
 Plugin 'mephux/bro.vim'
+Plugin 'jacoborus/tender.vim'
+" Plugin 'itchyny/lightline.vim'
+Plugin 'vim-airline/vim-airline'
 
 call vundle#end()            " required
 filetype plugin indent on    " required

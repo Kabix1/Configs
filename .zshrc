@@ -85,6 +85,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=$HOME/Scripts:$PATH
+export PATH=$HOME/bin:$PATH
 
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 alias tmux='tmux -2'
@@ -134,9 +135,6 @@ alias rdesktop='rdesktop -g 1680x980 -k sv -u olle.wiklund -d ATM.BINERO.NET -p 
 # }
 
 alias sshApache="ssh -F /home/olle/.ssh/apache_config -o StrictHostKeyChecking=no"
-SSH() {
-    xpanes -c "ssh {}" $(grep "$1" /etc/hosts | awk '{print $2}')
-}
 
 alias atm='kinit olle.wiklund@ATM.BINERO.NET'
 alias hostex='kinit olle.wiklund@HOSTEX.SE'
@@ -144,6 +142,7 @@ alias xclip='xclip -selection clipboard'
 alias testing='git checkout testing/queens'
 alias master='git checkout master'
 alias prod='git checkout production/queens'
+alias session='tmux switch -t'
 
 
 export WORKON_HOME=$HOME/.virtualenvs   # optional

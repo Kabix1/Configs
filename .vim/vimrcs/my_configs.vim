@@ -13,6 +13,19 @@ command! Duplicates %!awk 'a[$0]++'
 autocmd FileType bro setlocal commentstring=#\ %s
 
 augroup vimrc
-	au BufReadPre * setlocal foldmethod=indent
+    au BufReadPre * setlocal foldmethod=indent
     au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 augroup END
+
+set tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+
+" If you have vim >=8.0 or Neovim >= 0.1.5
+" if (has("termguicolors"))
+" set termguicolors
+" endif
+
+syntax enable
+colorscheme tender
+
+" let g:lightline = { 'colorscheme': 'tender' }
+let g:airline_theme = 'tender'
