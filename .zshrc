@@ -7,7 +7,7 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+# ZSH_THEME="wedisagree"
 DEFAULT_USER='olle'
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -29,7 +29,7 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -57,17 +57,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
 export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -75,21 +65,36 @@ export EDITOR='vim'
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 export PATH=$HOME/Scripts:$PATH
 export PATH=$HOME/bin:$PATH
 
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 alias tmux='tmux -2'
 
+############################
+### Powerlevel 9k setup ####
+############################
+# POWERLEVEL9K_BATTERY_CHARGING='yellow'
+# POWERLEVEL9K_BATTERY_CHARGED='green'
+# POWERLEVEL9K_BATTERY_DISCONNECTED='$DEFAULT_COLOR'
+# POWERLEVEL9K_BATTERY_LOW_THRESHOLD='10'
+# POWERLEVEL9K_BATTERY_LOW_COLOR='red'
+# POWERLEVEL9K_BATTERY_ICON='\uf1e6 '
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='\uf0da'
+# POWERLEVEL9K_VCS_GIT_ICON='\ue60a'
+#POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+#POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
+##POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
+#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status os_icon battery context dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(todo time)
+#POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
+#POWERLEVEL9K_SHORTEN_DIR_LENGTH=4
+##POWERLEVEL9K_CUSTOM_TIME_FORMAT="%D{\uf017 %H:%M:%S}"
+#POWERLEVEL9K_TIME_FORMAT="%D{\uf017 %H:%M \uf073 %d.%m.%y}"
+#POWERLEVEL9K_STATUS_VERBOSE=false
+#POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+############################
 
 # git aliases
 alias commit='git commit'
@@ -127,15 +132,7 @@ alias locate='locate -r'
 
 alias rdesktop='rdesktop -g 1680x980 -k sv -u olle.wiklund -d ATM.BINERO.NET -p - -r disk:share=/home/olle/rdesktop'
 
-# add personal path for autocompletion
-# fpath=(~/.zsh_completions $fpath)
-
-# =() {
-    # echo "$(($@))"
-# }
-
 alias sshApache="ssh -F /home/olle/.ssh/apache_config -o StrictHostKeyChecking=no"
-
 alias atm='kinit olle.wiklund@ATM.BINERO.NET'
 alias hostex='kinit olle.wiklund@HOSTEX.SE'
 alias xclip='xclip -selection clipboard'
@@ -143,7 +140,18 @@ alias testing='git checkout testing/queens'
 alias master='git checkout master'
 alias prod='git checkout production/queens'
 alias session='tmux switch -t'
-
+alias ps='grc ps'
+alias ip='grc ip'
+alias df='grc df'
+alias fdisk='grc fdisk'
+# alias ls='grc ls'
+alias du='grc du'
+alias make='grc make'
+alias cat='grc cat'
+alias tail='grc tail'
+alias sudo='sudo '
+alias todo='todo.sh'
+alias finished='todo archive'
 
 export WORKON_HOME=$HOME/.virtualenvs   # optional
 export PROJECT_HOME=$HOME/GitHub/      # optional
@@ -152,3 +160,5 @@ export PATH="/home/olle/.pyenv/bin:$PATH"
 export PATH="/home/olle/.local/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
+source /home/olle/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

@@ -26,11 +26,14 @@ Plugin 'mephux/bro.vim'
 Plugin 'jacoborus/tender.vim'
 " Plugin 'itchyny/lightline.vim'
 Plugin 'vim-airline/vim-airline'
+Plugin 'elzr/vim-json'
+Plugin 'freitass/todo.txt-vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 let g:pydoc_window_lines=0.5
+let g:powerline_pycmd="py"
 
 source ~/.vim/vimrcs/basic.vim
 source ~/.vim/vimrcs/filetypes.vim

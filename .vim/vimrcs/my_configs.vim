@@ -2,6 +2,8 @@ highlight NonText ctermbg=none
 hi Normal ctermbg=none
 
 noremap ¨ $
+let maplocalleader="\<space>"
+map <leader>t :e! ~/.todo/todo.txt<cr>
 
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
