@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# a simple logout dialog
+#
+###
+
+choice_by_dmenu() {
+    if [[ -f "$HOME/.dmenurc" ]]; then
+        . "$HOME/.dmenurc"
+    else
+        DMENU='dmenu -i'
+    fi
+
+    choice=$(echo "$(tmux ls)" | awk '{print $1}' | sed 's/:$//g' | $DMENU)
+    # choice=$(echo -e "0: Logout\n1: Shutdown\n2: Reboot" | $DMENU | cut -d ':' -f 1)
+}
+
+if [[ "$1" == "new" ]]
+then
+    name=$(dmenu -p "Name:" <&-)
+    [[ -z "$name" ]] && exit 1
+    tmux new -d -s "$name"
+    tmux switchc -t "$name"
+    exit 0
+fi
+
+[[ -z "$DISPLAY" ]] && exit 1
+
+choice_by_dmenu
+
+[[ -z "$choice" ]] && exit 1
+
+tmux switchc -t $choice
+

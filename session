@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [ -z "$1" ]
+then
+	tmux choose-session
+else
+	tmux switchc -t "$1"
+fi
