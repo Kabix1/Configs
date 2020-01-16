@@ -31,9 +31,10 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     csv
      (python :variables
               python-enable-yapf-format-on-save t
-              dotspacemacs-folding-method 'origami
+              ;; dotspacemacs-folding-method 'origami
               python-auto-set-local-pyenv-version on-visit)
      yaml
      html
@@ -74,6 +75,8 @@ values."
      version-control
      todotxt
      imenu-list
+     zeek
+     ;; asana
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -81,7 +84,12 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(doom-themes
-     yasnippet-snippets)
+     yasnippet-snippets
+     memory-usage
+     magit-gerrit
+     ox-mediawiki
+     ;; orgmode-mediawiki
+     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -153,15 +161,13 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one
-                         doom-dracula
-                         doom-molokai)
+   dotspacemacs-themes '(doom-molokai)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+   dotspacemacs-default-font '("FuraCode Nerd Font"
+                               :size 11
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -328,16 +334,109 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  '(evil-respect-visual-line-mode t)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
-jkkjkis the place where most of your configurations should be done. Unless it is
+This the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq undo-tree-enable-undo-in-region nil)
+  (with-eval-after-load 'org
+    (setq org-startup-indented t) ; Enable `org-indent-mode' by default
+    (add-hook 'org-mode-hook #'visual-line-mode))
+(use-package composite
+  :defer t
+  :config
+  (dolist (hook `(ediff-mode-hook
+                  mu4e-headers-mode-hook
+                  package-menu-mode-hook
+                  helm-major-mode-hook))
+    (add-hook hook (lambda () (setq-local auto-composition-mode nil))))
+  ;; support ligatures, some toned down to prevent hang
+  ;; (when (version<= "27.0" emacs-version)
+  ;;   (let ((alist
+  ;;          '((33 . ".\\(?:\\(==\\|[!=]\\)[!=]?\\)")
+  ;;            (35 . ".\\(?:\\(###?\\|_(\\|[(:=?[_{]\\)[#(:=?[_{]?\\)")
+  ;;            (36 . ".\\(?:\\(>\\)>?\\)")
+  ;;            (37 . ".\\(?:\\(%\\)%?\\)")
+  ;;            (38 . ".\\(?:\\(&\\)&?\\)")
+  ;;            (42 . ".\\(?:\\(\\*\\*\\|[*>]\\)[*>]?\\)")
+  ;;            ;; (42 . ".\\(?:\\(\\*\\*\\|[*/>]\\).?\\)")
+  ;;            (43 . ".\\(?:\\([>]\\)>?\\)")
+  ;;            ;; (43 . ".\\(?:\\(\\+\\+\\|[+>]\\).?\\)")
+  ;;            (45 . ".\\(?:\\(-[->]\\|<<\\|>>\\|[-<>|~]\\)[-<>|~]?\\)")
+  ;;            (46 . ".\\(?:\\(\\.[.<]\\|[-.=]\\)[-.<=]?\\)")
+  ;;            (47 . ".\\(?:\\(//\\|==\\|[=>]\\)[/=>]?\\)")
+  ;;            ;; (47 . ".\\(?:\\(//\\|==\\|[*/=>]\\).?\\)")
+  ;;            (48 . ".\\(?:\\(x[a-fA-F0-9]\\).?\\)")
+  ;;            (58 . ".\\(?:\\(::\\|[:<=>]\\)[:<=>]?\\)")
+  ;;            (59 . ".\\(?:\\(;\\);?\\)")
+  ;;            (60 . ".\\(?:\\(!--\\|\\$>\\|\\*>\\|\\+>\\|-[-<>|]\\|/>\\|<[-<=]\\|=[<>|]\\|==>?\\||>\\||||?\\|~[>~]\\|[$*+/:<=>|~-]\\)[$*+/:<=>|~-]?\\)")
+  ;;            (61 . ".\\(?:\\(!=\\|/=\\|:=\\|<<\\|=[=>]\\|>>\\|[=>]\\)[=<>]?\\)")
+  ;;            (62 . ".\\(?:\\(->\\|=>\\|>[-=>]\\|[-:=>]\\)[-:=>]?\\)")
+  ;;            (63 . ".\\(?:\\([.:=?]\\)[.:=?]?\\)")
+  ;;            (91 . ".\\(?:\\(|\\)|?\\)")
+  ;;            ;; (92 . ".\\(?:\\([\\n]\\)[\\]?\\)")
+  ;;            (94 . ".\\(?:\\(=\\)=?\\)")
+  ;;            (95 . ".\\(?:\\(|_\\|[_]\\)_?\\)")
+  ;;            (119 . ".\\(?:\\(ww\\)w?\\)")
+  ;;            (123 . ".\\(?:\\(|\\).?\\)")
+  ;;            (124 . ".\\(?:\\(->\\|=>\\||[-=>]\\||||*>\\|[]=>|}-]\\).?\\)")
+  ;;            (126 . ".\\(?:\\(~>\\|[-=>@~]\\).?\\)"))))
+  ;;     (dolist (char-regexp alist)
+  ;;       (set-char-table-range composition-function-table (car char-regexp)
+  ;;                             `([,(cdr char-regexp) 0 font-shape-gstring])))))
+  )
+  ;; (when (window-system)
+  ;; (set-frame-font "Fura Code"))
+;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+;;                (36 . ".\\(?:>\\)")
+;;                (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+;;                (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+;;                (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+;;                (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+;;                (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+;;                (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+;;                (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+;;                (48 . ".\\(?:x[a-zA-Z]\\)")
+;;                (58 . ".\\(?:::\\|[:=]\\)")
+;;                (59 . ".\\(?:;;\\|;\\)")
+;;                (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+;;                (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+;;                (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+;;                (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+;;                (91 . ".\\(?:]\\)")
+;;                (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+;;                (94 . ".\\(?:=\\)")
+;;                (119 . ".\\(?:ww\\)")
+;;                (123 . ".\\(?:-\\)")
+;;                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+;;                (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+;;                )
+;;              ))
+;;   (dolist (char-regexp alist)
+;;     (set-char-table-range composition-function-table (car char-regexp)
+;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
+  (with-eval-after-load 'magit
+    (require 'magit-gerrit))
+  (with-eval-after-load 'org
+    (setq org-directory "~/org")
+    (setq org-agenda-files '("~/org" "~/org/projects")))
+
+  (setq dotspacemacs-auto-resume-layouts t)
+(setq history-length 100)
+(put 'minibuffer-history 'history-length 50)
+(put 'evil-ex-history 'history-length 50)
+(put 'kill-ring 'history-length 25)
 (setq multi-term-program "/usr/bin/zsh"))
+
 ;; (use-package magithub
 ;;   :after magit
 ;;   :config (magithub-feature-autoinject t))
@@ -349,10 +448,19 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(asana-my-tasks-project-id 1141145318885046 t)
+ '(asana-selected-workspace
+   '((id . 12669517973829)
+     (gid . "12669517973829")
+     (name . "Binero Group")
+     (resource_type . "workspace")) t)
  '(evil-want-Y-yank-to-eol nil)
+ '(exec-path
+   '("/home/olle/.pyenv/shims/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/.pyenv/plugins/pyenv-virtualenv/shims/" "/home/olle/.pyenv/shims/" "/usr/local/zeek/bin/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/bin/" "/home/olle/.pyenv/shims/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/.pyenv/plugins/pyenv-virtualenv/shims/" "/home/olle/.pyenv/shims/" "/usr/local/zeek/bin/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/bin/" "/home/olle/.pyenv/shims/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/.pyenv/plugins/pyenv-virtualenv/shims/" "/home/olle/.pyenv/shims/" "/usr/local/zeek/bin/" "/home/olle/.pyenv/bin/" "/home/olle/.local/bin/" "/home/olle/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/bin/" "/usr/bin/site_perl/" "/usr/bin/vendor_perl/" "/usr/bin/core_perl/" "/home/olle/.scripts/cron/" "/home/olle/.scripts/i3cmds/" "/home/olle/.scripts/statusbar/" "/home/olle/.scripts/tools/" "/home/olle/.scripts/" "/usr/bin/site_perl/" "/usr/bin/vendor_perl/" "/usr/bin/core_perl/" "/home/olle/.scripts/cron/" "/home/olle/.scripts/i3cmds/" "/home/olle/.scripts/statusbar/" "/home/olle/.scripts/tools/" "/home/olle/.scripts/" "/usr/bin/site_perl/" "/usr/bin/vendor_perl/" "/usr/bin/core_perl/" "/home/olle/.scripts/cron/" "/home/olle/.scripts/i3cmds/" "/home/olle/.scripts/statusbar/" "/home/olle/.scripts/tools/" "/home/olle/.scripts/" "/usr/lib/emacs/28.0.50/x86_64-pc-linux-gnu/"))
+ '(org-startup-truncated nil)
  '(package-selected-packages
-   (quote
-    (origami disaster company-c-headers cmake-mode clang-format yasnippet-snippets company-quickhelp magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht evil-snipe imenu-list doom-themes all-the-icons memoize todotxt helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern tern company-statistics company-shell company-ansible company-anaconda company auto-yasnippet ac-ispell auto-complete insert-shebang fish-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake puppet-mode minitest chruby bundler inf-ruby web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary powershell jinja2-mode ansible-doc ansible yaml-mode pyenv-mode-auto web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+   '(ox-mediawiki magit-gerrit csv-mode memory-usage origami disaster company-c-headers cmake-mode clang-format yasnippet-snippets company-quickhelp magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht evil-snipe imenu-list doom-themes all-the-icons memoize todotxt helm-company helm-c-yasnippet fuzzy company-web web-completion-data company-tern tern company-statistics company-shell company-ansible company-anaconda company auto-yasnippet ac-ispell auto-complete insert-shebang fish-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake puppet-mode minitest chruby bundler inf-ruby web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode xterm-color smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl auto-dictionary powershell jinja2-mode ansible-doc ansible yaml-mode pyenv-mode-auto web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+ '(safe-local-variable-values '((encoding . utf-8))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
